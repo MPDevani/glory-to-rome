@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING
   }, {});
   Players.associate = function(models) {
-    // associations can be defined here
+    Players.belongsTo(models.Game, {foreignKey: 'gameId'})
   };
   return Players;
 };

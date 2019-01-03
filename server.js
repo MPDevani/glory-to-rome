@@ -14,16 +14,12 @@ app.use(bodyParser.json())
 app.post("/game", function(req, res) {
 	let gameCode = req.body.gameCode;
 	let playerName = req.body.playerName;
+	let game;
+	let player;
 
 	let playerPromise = Players.findOrCreate({
 		where: {
 			username: playerName
-		}
-	}).spread(function(player, created){
-		return {
-			username: player.username,
-			playerId: player.id,
-			playerCreated: created
 		}
 	})
 
@@ -31,18 +27,17 @@ app.post("/game", function(req, res) {
 		where: {
 	    	gameCode: gameCode
 	    }
-	}).spread(function(game, created) {
-		return{
-			gameCode: game.gameCode,
-			id: game.id,
-			gameCreated: created
-		};
 	});
 
-	return Promise.all([playerPromise,gamePromise]).spread(function(playerResult,gameResult){
+	return Promise.all([playerPromise,gamePromise]).spread((playerResult,gameResult) => {
+		game = gameResult[0];
+		player = playerResult[0];
+		return game.addPlayer(player) 
+	}).then((results) => {
+		console.log(results);	
 		return res.json({
-			player: playerResult,
-			game:gameResult
+			player: player,
+			game:game
 		})
 	})
 })
