@@ -1,13 +1,14 @@
 class GamePendingComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		this.gameId = this.props.match.params.gameId;
 		this.state = {players: undefined};
 		this.playersFound = false;
 		this.startGame = this.startGame.bind(this);
 	}
 
 	searchForPlayers(){
-		$.get('/game/' + this.props.gameId + '/players').then((result) =>{
+		$.get('/game/' + this.gameId + '/players').then((result) =>{
 			this.playersFound = true;
 			this.setState({players: result.players})
 
@@ -30,7 +31,7 @@ class GamePendingComponent extends React.Component {
 				)});
 				console.log('Playerslist', playersList);
 				let result = (<div>
-					<h1>Game: {this.props.gameCode}</h1>
+					<h1>Game Has Not Started Yet</h1>
 					<h3>Players:</h3>
 					<ul>
 						{playersList}
