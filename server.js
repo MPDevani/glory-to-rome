@@ -15,7 +15,7 @@ app.post("/game", function(req, res) {
 	let gameCode = req.body.gameCode;
 	let playerName = req.body.playerName;
 	let game;
-	let player;
+	let players;
 
 	let playerPromise = Players.findOrCreate({
 		where: {
@@ -31,15 +31,35 @@ app.post("/game", function(req, res) {
 
 	return Promise.all([playerPromise,gamePromise]).spread((playerResult,gameResult) => {
 		game = gameResult[0];
-		player = playerResult[0];
-		return game.addPlayer(player) 
+		players = playerResult[0];
+		return game.addPlayer(players)//where are you getting addplayer from? 
 	}).then((results) => {
-		console.log(results);	
 		return res.json({
-			player: player,
+			//player: player, (why is this removed?)
 			game:game
 		})
 	})
 })
+
+app.get('/game/:gameId/players', (req,res)=>{
+	return Game.findOne({
+		where: {
+			id: req.params.gameId
+			}
+		}).then((game)=>{
+			return game.getPlayers();//explain where get players is coming from
+		}).then((players)=> {
+			return res.json({
+				players:players
+			})
+		})
+	})
+
+
+
+
+
+
+
 
 app.listen(port, () => console.log(`Glory to Rome listening on port ${port}!`));
