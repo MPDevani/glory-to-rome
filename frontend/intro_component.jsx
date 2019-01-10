@@ -18,7 +18,7 @@ class IntroComponent extends React.Component {
 				playerName: playerName
 		}
 
-		$.post("/game", payload).then((result)=>{ //what would get passed into result
+		$.post("/api/game", payload).then((result)=>{ //what would get passed into result
 			console.log(result);
 			history.push("/game/" + result.game.id);
 			})

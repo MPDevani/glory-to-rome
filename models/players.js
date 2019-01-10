@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Players.associate = function(models) {
     Players.belongsTo(models.Game, {foreignKey: 'gameId'})
+    Players.hasOne(models.Hand, {foreignKey: 'playerId'});
   };
   return Players;
 };

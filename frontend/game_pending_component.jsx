@@ -8,7 +8,7 @@ class GamePendingComponent extends React.Component {
 	}
 
 	searchForPlayers(){
-		$.get('/game/' + this.gameId + '/players').then((result) =>{
+		$.get('/api/game/' + this.gameId + '/players').then((result) =>{
 			this.playersFound = true;
 			this.setState({players: result.players})
 
@@ -17,7 +17,9 @@ class GamePendingComponent extends React.Component {
 
 	startGame(event){
 		event.preventDefault();
-		console.log('STARTING GAME.');
+		$.post('/api/game/' + this.gameId + '/start').then((result) => {
+			console.log(result);
+		});
 	}
 
 	render(){
