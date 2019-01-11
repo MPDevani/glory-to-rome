@@ -1,4 +1,9 @@
-const {BrowserRouter, Route, Switch} = ReactRouterDOM;
+import ReactDOM from 'react-dom'
+import React from 'react'
+import {BrowserRouter, Route, Switch} from'react-router-dom'
+import {IntroComponent} from './intro_component.jsx'
+import {GamePendingComponent} from './game_pending_component.jsx'
+
 
 class GloryToRomeApp extends React.Component {
 	render() {

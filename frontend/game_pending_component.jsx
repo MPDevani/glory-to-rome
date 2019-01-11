@@ -1,4 +1,7 @@
-class GamePendingComponent extends React.Component {
+import ReactDOM from 'react-dom'
+import React from 'react'
+
+export class GamePendingComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.gameId = this.props.match.params.gameId;

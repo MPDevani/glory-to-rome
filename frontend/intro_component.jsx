@@ -1,9 +1,11 @@
-const withRouter = ReactRouterDOM.withRouter;
+import ReactDOM from 'react-dom'
+import React from 'react'
+import {withRouter} from 'react-router-dom'
 
 const GAME_CODE_ID = "gameCodeInputIdentifier";
 const PLAYER_NAME_ID = 'playerNameInputIdentifier';
 
-class IntroComponent extends React.Component {
+export class IntroComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);

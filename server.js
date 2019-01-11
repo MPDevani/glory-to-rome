@@ -10,6 +10,7 @@ const Deck = db.Deck;
 const Hand = db.Hand;
 
 app.use(express.static('frontend'));
+app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -83,7 +84,7 @@ app.post('/api/game/:gameId/start', (req,res) => {
 				playerId: player.id
 			});
 
-			return Promise.props({
+			return Promise.props({ //I don't understand from this point down
 				player: player,
 				hand: handPromise
 			});
