@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const Game = sequelize.define('Game', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    gameCode: DataTypes.STRING
+    gameCode: DataTypes.STRING,
+    hasStarted: { type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false }
   }, {});
 
   Game.associate = function(models) {

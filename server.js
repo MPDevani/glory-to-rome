@@ -59,14 +59,20 @@ app.get('/api/game/:gameId/players', (req,res)=>{
 	})
 
 app.post('/api/game/:gameId/start', (req,res) => {
-	let playersPromise = Game.findOne({
+	let gamePromise = Game.findOne({
 		where: {
 			id: req.params.gameId
 		}
-	}).then((game) => {
-		console.log("Game", game);
-		return game.getPlayers()
 	});
+
+	let gameUpdatePromise = gamePromise.then((game) => {
+		game.hasStarted = true;
+		return game.save()
+	});
+
+	let playersPromise = gamePromise.then((game) => {
+		return game.getPlayers()
+		});
 
 	let deckCreationPromise = playersPromise.then((players) => {
 		return Deck.create({
@@ -95,12 +101,52 @@ app.post('/api/game/:gameId/start', (req,res) => {
 
 	return Promise.props({
 		playerInfo: playerInfoPromises,
-		deck: deckCreationPromise
+		deck: deckCreationPromise,
+		gameStarted: gameUpdatePromise
 	}).then((result) => {
 		console.log("Result", result);
 		res.json(result);
 	});
 });
+
+app.get('/api/game/:gameId', (req,res) => {
+	let gamePromise = Game.findOne({
+		where: {
+			id: req.params.gameId
+		}
+	});
+
+	let playersPromise = gamePromise.then((game) => {
+		return Promise.props({
+			game: game,
+			players: game.getPlayers()
+		});
+	}).then((results) => {
+		return Promise.all(results.players.map((player) => {
+			let hand;
+			if (results.game.hasStarted) {
+				hand = player.getHand();
+			}
+			return Promise.props ({
+				player: player,
+				hand: hand
+			});
+		}));
+	});
+	let deckPromise = gamePromise.then((game) => {
+		if(game.hasStarted) {
+			return game.getDeck();
+		}
+		return undefined;
+	});
+	Promise.props({
+		playerInfo: playersPromise,
+		game: gamePromise,
+		deck: deckPromise
+	}).then((results) => {
+		res.json(results);
+	})
+})
 
 
 app.get("/*", (req, res) => {
