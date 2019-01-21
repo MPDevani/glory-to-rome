@@ -3,6 +3,7 @@ import React from 'react'
 import {BrowserRouter, Route, Switch} from'react-router-dom'
 import {IntroComponent} from './intro_component.jsx'
 import {GamePendingComponent} from './game_pending_component.jsx'
+import {GameComponent} from './game_component.jsx'
 
 
 class GloryToRomeApp extends React.Component {
@@ -11,7 +12,8 @@ class GloryToRomeApp extends React.Component {
 			<div>
 			<Switch>
 				<Route path="/" exact component={IntroComponent} />
-				<Route path="/game/:gameId" component={GamePendingComponent} />
+				<Route path="/game/:gameId/pending" component={GamePendingComponent} />
+				<Route path="/game/:gameId/" component={GameComponent} />
 			</Switch>	
 			</div>
 		</BrowserRouter>

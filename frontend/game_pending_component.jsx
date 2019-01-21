@@ -1,10 +1,11 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 
 export class GamePendingComponent extends React.Component {
 	constructor(props) {
 		super(props);
-		this.gameId = this.props.match.params.gameId;
+		this.gameId = this.props.match.params.gameId;//explain this
 		this.state = {players: undefined};
 		this.playersFound = false;
 		this.startGame = this.startGame.bind(this);
@@ -18,10 +19,10 @@ export class GamePendingComponent extends React.Component {
 		})
 	}
 
-	startGame(event){
+	startGame(event, history){
 		event.preventDefault();
 		$.post('/api/game/' + this.gameId + '/start').then((result) => {
-			console.log(result);
+			history.push(/game/ + result.game.id); //explain this
 		});
 	}
 
@@ -30,22 +31,20 @@ export class GamePendingComponent extends React.Component {
 			this.searchForPlayers();
 			return <h1>Loading...</h1>
 		} else {
-			console.log(this.state.players);
 			let playersList = this.state.players.map((player) => {
 				return (<li key={player.id}> {player.username}</li>
 				)});
-				console.log('Playerslist', playersList);
-				let result = (<div>
+				let PendingComponent = withRouter(({history}) => (<div>
 					<h1>Game Has Not Started Yet</h1>
 					<h3>Players:</h3>
 					<ul>
 						{playersList}
 					</ul>
-					<form onSubmit={this.startGame}>
+					<form onSubmit={(event) => this.startGame(event, history)}>
 						<input type='submit' name='submit' value='Start Game' />
 					</form>
-				</div>)
-				return result;
+				</div>))
+				return <PendingComponent />;
 		}
 	}
 };

@@ -102,7 +102,7 @@ app.post('/api/game/:gameId/start', (req,res) => {
 	return Promise.props({
 		playerInfo: playerInfoPromises,
 		deck: deckCreationPromise,
-		gameStarted: gameUpdatePromise
+		game: gameUpdatePromise
 	}).then((result) => {
 		console.log("Result", result);
 		res.json(result);
