@@ -4,6 +4,9 @@ import {withRouter} from "react-router-dom";
 import {Game} from "./models/game.js";
 import {Player} from "./models/player.js";
 import {Deck} from "./models/deck.js";
+import {DeckComponent} from './deck_component.jsx'
+import {GameTitleComponent} from './game_title_component.jsx'
+import {PlayersComponent} from './players_component.jsx'
 
 export class GameComponent extends React.Component {
 	constructor(props) {
@@ -54,7 +57,9 @@ export class GameComponent extends React.Component {
 			}
 			return (
 				<div>
-					<h1>Game: {this.state.game.gameCode} has started!</h1>
+					<GameTitleComponent game={this.state.game} />
+					<DeckComponent deck={this.state.deck} />
+					<PlayersComponent players={this.state.players}/>
 				</div>
 				)
 		});
